@@ -6,30 +6,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public class BookLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer bookId;
+    private Integer bookLogId;
 
-    @Column(length = 200)
-    private String title;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="book_id")
+    private Book book;
 
-    private Integer price;
+    @Column(columnDefinition = "TEXT")
+    private String comment;
+
+    private Integer page;
 
     @CreationTimestamp
     private LocalDateTime insertDateTime;
-
-    @OneToMany(mappedBy="book", fetch=FetchType.LAZY)
-    @Builder.Default
-    private List<BookLog> bookLogList = new ArrayList();
 
 }
